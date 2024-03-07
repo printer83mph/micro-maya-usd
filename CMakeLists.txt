@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.11)
 project(MicroMayaUSD LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(SOURCES
@@ -38,7 +38,11 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOUIC_SEARCH_PATHS forms)
 find_package(Qt6 COMPONENTS Core Widgets OpenGLWidgets REQUIRED)
 
-# find_package(pxr REQUIRED)
+find_package(pxr REQUIRED)
+# Fix compilation error with C++17 on macos
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_CXX_STANDARD MATCHES "17")
+    add_compile_definitions(_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION)
+endif()
 
 include(FetchContent)
 
@@ -54,9 +58,9 @@ add_executable(${PROJECT_NAME} ${SOURCES} ${QT_RESOURCES})
 target_link_libraries(${PROJECT_NAME} PRIVATE
   Qt6::Core Qt6::Widgets Qt6::OpenGLWidgets
   glm::glm
-  # ${PXR_LIBRARIES}
+  ${PXR_LIBRARIES}
 )
 target_include_directories(${PROJECT_NAME} PRIVATE
   src
-  # ${PXR_INCLUDE_DIRS}
+  ${PXR_INCLUDE_DIRS}
 )
