@@ -1,20 +1,18 @@
 #pragma once
 
-#include <drawable.h>
-#include <openglcontext.h>
-#include <meshdata/face.h>
+#include "drawable.h"
+#include "meshdata/face.h"
+#include "openglcontext.h"
 
-
-class WireFace : public Drawable
-{
+class WireFace : public Drawable {
 public:
-    WireFace(OpenGLContext* context);
+  WireFace(OpenGLContext *context);
 
-    void setFace(Face* vert);
+  void setFace(Face *vert);
 
-    void create() override;
-    GLenum drawMode() override;
+  void create() override;
+  GLenum drawMode() override;
 
 private:
-    Face* face;
+  Face *face;
 };

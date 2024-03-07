@@ -1,5 +1,6 @@
 #include "mygl.h"
-#include "la.h"
+
+#include <la.h>
 
 #include <QApplication>
 #include <QKeyEvent>

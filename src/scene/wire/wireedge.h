@@ -1,20 +1,18 @@
 #pragma once
 
-#include <drawable.h>
-#include <openglcontext.h>
-#include <meshdata/halfedge.h>
+#include "drawable.h"
+#include "meshdata/halfedge.h"
+#include "openglcontext.h"
 
-
-class WireEdge : public Drawable
-{
+class WireEdge : public Drawable {
 public:
-    WireEdge(OpenGLContext* context);
+  WireEdge(OpenGLContext *context);
 
-    void setEdge(HalfEdge* edge);
+  void setEdge(HalfEdge *edge);
 
-    void create() override;
-    GLenum drawMode() override;
+  void create() override;
+  GLenum drawMode() override;
 
 private:
-    HalfEdge* edge;
+  HalfEdge *edge;
 };

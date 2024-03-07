@@ -1,11 +1,10 @@
-#ifndef SHADERPROGRAM_H
-#define SHADERPROGRAM_H
-
-#include "la.h"
-#include <glm/glm.hpp>
-#include <openglcontext.h>
+#pragma once
 
 #include "drawable.h"
+#include "openglcontext.h"
+#include <la.h>
+
+#include <glm/glm.hpp>
 
 class ShaderProgram {
 public:
@@ -72,5 +71,3 @@ private:
                           // OpenGL context to the Drawable in order to call GL
                           // functions from within this class.
 };
-
-#endif // SHADERPROGRAM_H

@@ -1,6 +1,6 @@
 #include "squareplane.h"
-#include "la.h"
-#include <iostream>
+
+#include <la.h>
 
 SquarePlane::SquarePlane(OpenGLContext *mp_context) : Drawable(mp_context) {}
 

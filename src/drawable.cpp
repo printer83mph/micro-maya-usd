@@ -1,5 +1,6 @@
 #include "drawable.h"
-#include "la.h"
+
+#include <la.h>
 
 Drawable::Drawable(OpenGLContext *context)
     : count(-1), bufIdx(), bufPos(), bufNor(), bufCol(), bufJointIdx(),

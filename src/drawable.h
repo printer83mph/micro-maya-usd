@@ -1,7 +1,7 @@
 #pragma once
 
-#include "la.h"
-#include <openglcontext.h>
+#include "openglcontext.h"
+#include <la.h>
 
 // This defines a class which can be rendered by our shader program.
 // Make any geometry a subclass of ShaderProgram::Drawable in order to render it

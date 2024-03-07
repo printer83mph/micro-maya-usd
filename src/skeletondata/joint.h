@@ -1,12 +1,8 @@
 #pragma once
 
-#include <drawable.h>
-#include <openglcontext.h>
-#include <shaderprogram.h>
-#include <smartpointerhelp.h>
-
-#include <array>
-#include <vector>
+#include "drawable.h"
+#include "openglcontext.h"
+#include "smartpointerhelp.h"
 
 #include <QJsonArray>
 #include <QJsonObject>
@@ -16,6 +12,9 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
+
+#include <array>
+#include <vector>
 
 class Joint : public Drawable, public QTreeWidgetItem {
 public:
