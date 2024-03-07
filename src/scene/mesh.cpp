@@ -2,10 +2,11 @@
 
 #include "utils.h"
 
-#include <glm/glm.hpp>
+#include <pxr/usd/usdGeom/mesh.h>
 
 #include <unordered_map>
 #include <unordered_set>
+#include <vector>
 
 uint64_t PairHash::operator()(const std::pair<Vertex *, Vertex *> p) const {
   uint64_t addr1 = reinterpret_cast<uint64_t>(p.first);
@@ -356,6 +357,38 @@ void Mesh::unbindSkeleton() {
   for (auto &vert : verts) {
     vert->clearWeights();
   }
+}
+
+pxr::UsdGeomMesh Mesh::createUsdMesh(pxr::UsdStagePtr stage,
+                                     const char *path) const {
+  std::vector<glm::vec4> points;
+  std::vector<int> indices;
+
+  for (auto &face : faces) {
+    int offset = points.size();
+    int faceEdgeCount = 0;
+    auto iterEdge = face->edge;
+    do {
+      points.push_back(glm::vec4(iterEdge->nextVert->pos, 1));
+      iterEdge = iterEdge->nextEdge;
+      ++faceEdgeCount;
+    } while (iterEdge != face->edge);
+    for (int i = 1; i + 1 < faceEdgeCount; ++i) {
+      indices.push_back(offset);
+      indices.push_back(offset + i);
+      indices.push_back(offset + i + 1);
+    }
+  }
+
+  pxr::UsdGeomMesh usdMesh =
+      pxr::UsdGeomMesh::Define(stage, pxr::SdfPath(path));
+
+  auto pointsAttr = usdMesh.GetPointsAttr();
+  pointsAttr.Set(points);
+  auto idxAttr = usdMesh.GetFaceVertexIndicesAttr();
+  idxAttr.Set(indices);
+
+  return usdMesh;
 }
 
 void Mesh::parseOBJ(QFile &file, std::vector<glm::vec3> *verts,

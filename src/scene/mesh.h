@@ -1,12 +1,16 @@
 #pragma once
 
 #include "drawable.h"
+#include "glm/fwd.hpp"
 #include "meshdata/face.h"
 #include "meshdata/halfedge.h"
 #include "meshdata/vertex.h"
 #include "smartpointerhelp.h"
 
 #include <QFile>
+#include <pxr/usd/usd/common.h>
+#include <pxr/usd/usdGeom/mesh.h>
+
 #include <vector>
 
 class Vertex;
@@ -49,6 +53,9 @@ public:
 
   void bindSkeleton(Joint *root);
   void unbindSkeleton();
+
+  pxr::UsdGeomMesh createUsdMesh(pxr::UsdStagePtr stage,
+                                 const char *path) const;
 
 private:
   std::vector<uPtr<Vertex>> verts;
