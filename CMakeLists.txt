@@ -27,7 +27,7 @@ set(SOURCES
 )
 
 set(QT_RESOURCES
-  glsl.qrc
+  resources/glsl.qrc
   forms/mainwindow.ui
   forms/cameracontrolshelp.ui
 )

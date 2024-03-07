@@ -173,7 +173,7 @@ void MainWindow::slot_loadObj()
 {
     // TODO: this is inaccurate on Windows
     QString filePath = QFileDialog::getOpenFileName(this, "Select an OBJ file to load",
-                                                    "../../../obj_files",
+                                                    "./resources/obj_files",
                                                     "OBJ Files (*.obj)");
 
     QFile file = QFile(filePath);
@@ -193,7 +193,7 @@ void MainWindow::slot_loadObj()
 void MainWindow::slot_loadSkeleton()
 {
     QString filePath = QFileDialog::getOpenFileName(this, "Select a JSON skeleton file to load",
-                                                    "../../../jsons",
+                                                    "./resources/jsons",
                                                     "JSON Files (*.json)");
 
     QFile file = QFile(filePath);

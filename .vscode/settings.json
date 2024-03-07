@@ -6,4 +6,5 @@
   ],
   "cmake.buildDirectory": "${workspaceFolder}/build",
   "cmake.exportCompileCommandsFile": true,
+  "cmake.configureOnEdit": false
 }
