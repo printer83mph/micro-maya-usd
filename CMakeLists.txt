@@ -1,29 +1,29 @@
 cmake_minimum_required(VERSION 3.11)
-project(MicroMayaUSD VERSION 1.0.0 LANGUAGES CXX)
+project(MicroMayaUSD LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(SOURCES
+  src/camera.cpp
+  src/cameracontrolshelp.cpp
+  src/drawable.cpp
+  src/la.cpp
+  src/main.cpp
+  src/mainwindow.cpp
   src/meshdata/face.cpp
   src/meshdata/halfedge.cpp
   src/meshdata/vertex.cpp
-  src/main.cpp
-  src/mainwindow.cpp
   src/mygl.cpp
+  src/openglcontext.cpp
   src/scene/mesh.cpp
+  src/scene/squareplane.cpp
   src/scene/wire/wireedge.cpp
   src/scene/wire/wireface.cpp
   src/scene/wire/wirevertex.cpp
   src/shaderprogram.cpp
   src/skeletondata/joint.cpp
   src/utils.cpp
-  src/la.cpp
-  src/drawable.cpp
-  src/camera.cpp
-  src/cameracontrolshelp.cpp
-  src/openglcontext.cpp
-  src/scene/squareplane.cpp
 )
 
 set(QT_RESOURCES
