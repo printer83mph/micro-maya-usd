@@ -1,0 +1,9 @@
+{
+  "cmake.generator": "Ninja",
+  "cmake.preferredGenerators": [
+    "Ninja",
+    "Unix Makefiles"
+  ],
+  "cmake.buildDirectory": "${workspaceFolder}/build",
+  "cmake.exportCompileCommandsFile": true,
+}
