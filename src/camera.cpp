@@ -79,3 +79,7 @@ void Camera::TranslateAlongUp(float amt) {
   eye += translation;
   ref += translation;
 }
+
+void Camera::ZoomByRatio(float ratio) {
+  zoom = glm::clamp(zoom * ratio, 0.f, 1000.f);
+}

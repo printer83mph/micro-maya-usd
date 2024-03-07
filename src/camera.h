@@ -52,4 +52,6 @@ public:
   void TranslateAlongLook(float amt, bool withRef);
   void TranslateAlongRight(float amt);
   void TranslateAlongUp(float amt);
+
+  void ZoomByRatio(float ratio);
 };

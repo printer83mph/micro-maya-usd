@@ -302,13 +302,21 @@ void MyGL::keyPressEvent(QKeyEvent *e) {
 void MyGL::mouseMoveEvent(QMouseEvent *e) {
   auto newPos = glm::ivec2(e->pos().x(), e->pos().y());
   glm::vec2 delta = newPos - m_lastMousePos;
-  delta *= 0.5 / devicePixelRatio();
+  delta /= devicePixelRatio();
 
   if (e->buttons().testFlag(Qt::LeftButton)) {
-    m_glCamera.RotateAboutUp(-delta.x);
-    m_glCamera.RotateAboutRight(-delta.y);
+    m_glCamera.RotateAboutUp(-delta.x * 0.5);
+    m_glCamera.RotateAboutRight(-delta.y * 0.5);
     m_glCamera.RecomputeAttributes();
     update();
+  } else if (e->buttons().testFlag(Qt::RightButton)) {
+    m_glCamera.ZoomByRatio(1 - delta.y * 0.005);
+    m_glCamera.RecomputeAttributes();
+    update();
+  } else if (e->buttons().testFlag(Qt::MiddleButton)) {
+    // TODO: test with mouse
+    m_glCamera.TranslateAlongRight(delta.x * 0.01);
+    m_glCamera.TranslateAlongUp(delta.y * 0.01);
   }
 
   m_lastMousePos = newPos;
