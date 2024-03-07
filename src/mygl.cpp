@@ -1,4 +1,5 @@
 #include "mygl.h"
+#include "glm/fwd.hpp"
 
 #include <la.h>
 
@@ -9,8 +10,9 @@ MyGL::MyGL(QWidget *parent)
     : OpenGLContext(parent), m_mesh(nullptr), m_rootJoint(nullptr),
       m_wireVert(this), m_wireFace(this), m_wireEdge(this), m_progLambert(this),
       m_progFlat(this), m_progSkeleton(this), m_glCamera(),
-      selectMode(SelectionMode::NONE) {
+      m_lastMousePos(0, 0), selectMode(SelectionMode::NONE) {
   setFocusPolicy(Qt::StrongFocus);
+  setMouseTracking(true);
 }
 
 MyGL::~MyGL() {
@@ -244,8 +246,6 @@ void MyGL::keyPressEvent(QKeyEvent *e) {
     amount = 10.0f;
   }
   // http://doc.qt.io/qt-5/qt.html#Key-enum
-  // This could all be much more efficient if a switch
-  // statement were used
   if (e->key() == Qt::Key_Escape) {
     QApplication::quit();
   } else if (e->key() == Qt::Key_Right) {
@@ -297,6 +297,21 @@ void MyGL::keyPressEvent(QKeyEvent *e) {
   }
   m_glCamera.RecomputeAttributes();
   update(); // Calls paintGL, among other things
+}
+
+void MyGL::mouseMoveEvent(QMouseEvent *e) {
+  auto newPos = glm::ivec2(e->pos().x(), e->pos().y());
+  glm::vec2 delta = newPos - m_lastMousePos;
+  delta *= 0.5 / devicePixelRatio();
+
+  if (e->buttons().testFlag(Qt::LeftButton)) {
+    m_glCamera.RotateAboutUp(-delta.x);
+    m_glCamera.RotateAboutRight(-delta.y);
+    m_glCamera.RecomputeAttributes();
+    update();
+  }
+
+  m_lastMousePos = newPos;
 }
 
 void MyGL::slot_setVertPosX(double x) {

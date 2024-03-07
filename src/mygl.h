@@ -13,6 +13,7 @@
 #include <QJsonDocument>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLVertexArrayObject>
+#include <glm/fwd.hpp>
 
 enum SelectionMode { NONE, VERTEX, FACE, EDGE, JOINT };
 
@@ -22,9 +23,9 @@ public:
   explicit MyGL(QWidget *parent = nullptr);
   ~MyGL();
 
-  void initializeGL();
-  void resizeGL(int w, int h);
-  void paintGL();
+  void initializeGL() override;
+  void resizeGL(int w, int h) override;
+  void paintGL() override;
 
   void loadObj(QFile &file);
   void loadSkeleton(QJsonDocument &doc);
@@ -39,7 +40,8 @@ public:
   void rotateJoint(float x, float y, float z);
 
 protected:
-  void keyPressEvent(QKeyEvent *e);
+  void keyPressEvent(QKeyEvent *e) override;
+  void mouseMoveEvent(QMouseEvent *e) override;
 
 signals:
   void signal_clearUI();
@@ -81,6 +83,8 @@ private:
               // this. Just know it is necessary in order to render geometry.
 
   Camera m_glCamera;
+
+  glm::ivec2 m_lastMousePos;
 
   Vertex *selectedVert;
   Face *selectedFace;
