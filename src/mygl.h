@@ -45,6 +45,7 @@ public:
 protected:
   void keyPressEvent(QKeyEvent *e) override;
   void mouseMoveEvent(QMouseEvent *e) override;
+  void wheelEvent(QWheelEvent *e) override;
 
 signals:
   void signal_clearUI();

@@ -339,6 +339,12 @@ void MyGL::mouseMoveEvent(QMouseEvent *e) {
   m_lastMousePos = newPos;
 }
 
+void MyGL::wheelEvent(QWheelEvent *e) {
+  m_glCamera.ZoomByRatio(1 - e->angleDelta().y() * 0.0025);
+  m_glCamera.RecomputeAttributes();
+  update();
+}
+
 void MyGL::slot_setVertPosX(double x) {
   if (!selectedVert) {
     return;
