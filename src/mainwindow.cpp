@@ -19,6 +19,9 @@ MainWindow::MainWindow(QWidget *parent)
   // load skeleton button
   connect(ui->actionImportJSONSkeleton, &QAction::triggered, this,
           &MainWindow::slot_loadSkeleton);
+  // export USD button
+  connect(ui->actionExportUSD, &QAction::triggered, this,
+          &MainWindow::slot_exportUSD);
 
   // ui initialization
   connect(ui->mygl, &MyGL::signal_clearUI, this, &MainWindow::slot_clearUI);
@@ -103,7 +106,7 @@ void MainWindow::slot_loadObj() {
       this, "Select an OBJ file to load", "./resources/obj_files",
       "OBJ Files (*.obj)");
 
-  QFile file = QFile(filePath);
+  QFile file = QFile(filePath, this);
 
   // make sure file is readable
   if (!file.open(QIODevice::ReadOnly)) {
@@ -122,7 +125,7 @@ void MainWindow::slot_loadSkeleton() {
       QFileDialog::getOpenFileName(this, "Select a JSON skeleton file to load",
                                    "./resources/jsons", "JSON Files (*.json)");
 
-  QFile file = QFile(filePath);
+  QFile file = QFile(filePath, this);
 
   // make sure file is readable
   if (!file.open(QIODevice::ReadOnly)) {
@@ -132,6 +135,22 @@ void MainWindow::slot_loadSkeleton() {
 
   auto jsonDoc = QJsonDocument().fromJson(file.readAll());
   ui->mygl->loadSkeleton(jsonDoc);
+}
+
+void MainWindow::slot_exportUSD() {
+  if (!ui->mygl->isMeshLoaded()) {
+    QMessageBox::information(0, "No mesh to export",
+                             "A mesh must be loaded before exporting.");
+    return;
+  }
+
+  QString filePath = QFileDialog::getSaveFileName(
+      this, "Save an exported USD file", "./", "USD Files (*.usd)");
+
+  if (filePath.isEmpty() || filePath.isNull())
+    return;
+
+  ui->mygl->exportUSD(filePath);
 }
 
 void MainWindow::slot_clearUI() {

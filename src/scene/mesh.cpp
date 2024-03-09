@@ -1,10 +1,9 @@
 #include "mesh.h"
 
+#include "meshdata/vertex.h"
 #include "utils.h"
 
-#include <pxr/base/gf/vec4f.h>
-#include <pxr/base/vt/array.h>
-#include <pxr/usd/usdGeom/mesh.h>
+#include <pxr/usd/usd/common.h>
 
 #include <unordered_map>
 #include <unordered_set>
@@ -363,33 +362,38 @@ void Mesh::unbindSkeleton() {
 
 pxr::UsdGeomMesh Mesh::createUsdMesh(pxr::UsdStagePtr stage,
                                      const char *path) const {
-  auto points = pxr::VtArray<pxr::GfVec4f>();
-  auto indices = pxr::VtArray<int>();
+  auto pxr_points = pxr::VtArray<pxr::GfVec3f>();
+  auto pxr_indices = pxr::VtArray<int>();
+  auto pxr_vtCounts = pxr::VtArray<int>();
+
+  // fill points, map from vertices to indices
+  auto vertToIndex = std::unordered_map<Vertex *, int>();
+  for (int i = 0; i < verts.size(); ++i) {
+    Vertex *v = verts[i].get();
+    pxr_points.push_back(pxr::GfVec3f(v->pos.x, v->pos.y, v->pos.z));
+    vertToIndex[v] = i;
+  }
 
   for (auto &face : faces) {
-    int offset = points.size();
-    int faceEdgeCount = 0;
+    int edgeCount = 0;
     auto iterEdge = face->edge;
     do {
-      auto pos = iterEdge->nextVert->pos;
-      points.push_back(pxr::GfVec4f(pos.x, pos.y, pos.z, 1));
+      pxr_indices.push_back(vertToIndex[iterEdge->nextVert]);
       iterEdge = iterEdge->nextEdge;
-      ++faceEdgeCount;
+      ++edgeCount;
     } while (iterEdge != face->edge);
-    for (int i = 1; i + 1 < faceEdgeCount; ++i) {
-      indices.push_back(offset);
-      indices.push_back(offset + i);
-      indices.push_back(offset + i + 1);
-    }
+    pxr_vtCounts.push_back(edgeCount);
   }
 
   pxr::UsdGeomMesh usdMesh =
       pxr::UsdGeomMesh::Define(stage, pxr::SdfPath(path));
 
   auto pointsAttr = usdMesh.GetPointsAttr();
-  pointsAttr.Set(points);
+  pointsAttr.Set(pxr_points);
   auto idxAttr = usdMesh.GetFaceVertexIndicesAttr();
-  idxAttr.Set(indices);
+  idxAttr.Set(pxr_indices);
+  auto vtCountsAttr = usdMesh.GetFaceVertexCountsAttr();
+  vtCountsAttr.Set(pxr_vtCounts);
 
   return usdMesh;
 }

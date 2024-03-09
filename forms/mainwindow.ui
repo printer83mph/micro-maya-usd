@@ -638,7 +638,7 @@
     </property>
     <addaction name="actionImportOBJ"/>
     <addaction name="actionImportJSONSkeleton"/>
-    <addaction name="actionExport_USD"/>
+    <addaction name="actionExportUSD"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -683,7 +683,7 @@
     <string>Ctrl+Shift+O</string>
    </property>
   </action>
-  <action name="actionExport_USD">
+  <action name="actionExportUSD">
    <property name="text">
     <string>Export USD</string>
    </property>
@@ -691,7 +691,7 @@
     <string>Export the mesh as a USD (Universal Scene Description) binary file</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+S</string>
+    <string>Ctrl+E</string>
    </property>
   </action>
  </widget>

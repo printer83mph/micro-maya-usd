@@ -5,6 +5,10 @@
 
 #include <QApplication>
 #include <QKeyEvent>
+#include <pxr/usd/usd/stage.h>
+
+#include <filesystem>
+#include <string>
 
 MyGL::MyGL(QWidget *parent)
     : OpenGLContext(parent), m_mesh(nullptr), m_rootJoint(nullptr),
@@ -147,7 +151,7 @@ void MyGL::loadObj(QFile &file) {
   update();
 }
 
-void MyGL::loadSkeleton(QJsonDocument &doc) {
+void MyGL::loadSkeleton(const QJsonDocument &doc) {
   if (m_mesh) {
     m_mesh->unbindSkeleton();
   }
@@ -156,6 +160,17 @@ void MyGL::loadSkeleton(QJsonDocument &doc) {
   m_rootJoint->create();
 
   emit signal_setJoint(m_rootJoint.get());
+}
+
+void MyGL::exportUSD(const QString &filePath) const {
+  auto path = std::filesystem::path(filePath.toStdString());
+  auto stage = pxr::UsdStage::CreateNew(path.c_str());
+
+  auto meshPath = "/" + path.replace_extension("").filename().string();
+  auto mesh = m_mesh->createUsdMesh(stage, meshPath.c_str());
+
+  stage->SetDefaultPrim(mesh.GetPrim());
+  stage->Save();
 }
 
 void MyGL::bindMesh() {
@@ -239,6 +254,8 @@ void MyGL::rotateJoint(float x, float y, float z) {
 
   update();
 }
+
+bool MyGL::isMeshLoaded() const { return m_mesh != nullptr; }
 
 void MyGL::keyPressEvent(QKeyEvent *e) {
   float amount = 2.0f;

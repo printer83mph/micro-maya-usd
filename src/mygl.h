@@ -28,7 +28,8 @@ public:
   void paintGL() override;
 
   void loadObj(QFile &file);
-  void loadSkeleton(QJsonDocument &doc);
+  void loadSkeleton(const QJsonDocument &doc);
+  void exportUSD(const QString &filePath) const;
   void bindMesh();
 
   void clearSelectionMode();
@@ -38,6 +39,8 @@ public:
   void setSelectedJoint(Joint *joint);
 
   void rotateJoint(float x, float y, float z);
+
+  bool isMeshLoaded() const;
 
 protected:
   void keyPressEvent(QKeyEvent *e) override;
