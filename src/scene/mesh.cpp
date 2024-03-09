@@ -2,6 +2,8 @@
 
 #include "utils.h"
 
+#include <pxr/base/gf/vec4f.h>
+#include <pxr/base/vt/array.h>
 #include <pxr/usd/usdGeom/mesh.h>
 
 #include <unordered_map>
@@ -361,15 +363,16 @@ void Mesh::unbindSkeleton() {
 
 pxr::UsdGeomMesh Mesh::createUsdMesh(pxr::UsdStagePtr stage,
                                      const char *path) const {
-  std::vector<glm::vec4> points;
-  std::vector<int> indices;
+  auto points = pxr::VtArray<pxr::GfVec4f>();
+  auto indices = pxr::VtArray<int>();
 
   for (auto &face : faces) {
     int offset = points.size();
     int faceEdgeCount = 0;
     auto iterEdge = face->edge;
     do {
-      points.push_back(glm::vec4(iterEdge->nextVert->pos, 1));
+      auto pos = iterEdge->nextVert->pos;
+      points.push_back(pxr::GfVec4f(pos.x, pos.y, pos.z, 1));
       iterEdge = iterEdge->nextEdge;
       ++faceEdgeCount;
     } while (iterEdge != face->edge);
