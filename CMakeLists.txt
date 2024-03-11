@@ -1,30 +1,14 @@
-cmake_minimum_required(VERSION 3.11)
-project(MicroMayaUSD LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.11...3.28)
+if(${CMAKE_VERSION} VERSION_LESS 3.12)
+  cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
+endif()
+
+project(microMayaUSD VERSION 1.0
+                     DESCRIPTION "A simple 3D model viewer and editor using Qt, integrating USD"
+                     LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-set(SOURCES
-  src/camera.cpp
-  src/cameracontrolshelp.cpp
-  src/drawable.cpp
-  src/la.cpp
-  src/main.cpp
-  src/mainwindow.cpp
-  src/meshdata/face.cpp
-  src/meshdata/halfedge.cpp
-  src/meshdata/vertex.cpp
-  src/mygl.cpp
-  src/openglcontext.cpp
-  src/scene/mesh.cpp
-  src/scene/squareplane.cpp
-  src/scene/wire/wireedge.cpp
-  src/scene/wire/wireface.cpp
-  src/scene/wire/wirevertex.cpp
-  src/shaderprogram.cpp
-  src/skeletondata/joint.cpp
-  src/utils.cpp
-)
 
 set(QT_RESOURCES
   resources/glsl.qrc
@@ -54,13 +38,13 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(glm)
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${QT_RESOURCES})
-target_link_libraries(${PROJECT_NAME} PRIVATE
+add_executable(microMayaUSD ${QT_RESOURCES})
+add_subdirectory(src)
+target_link_libraries(microMayaUSD PRIVATE
   Qt6::Core Qt6::Widgets Qt6::OpenGLWidgets
   glm::glm
   ${PXR_LIBRARIES}
 )
-target_include_directories(${PROJECT_NAME} PRIVATE
-  src
+target_include_directories(microMayaUSD PRIVATE
   ${PXR_INCLUDE_DIRS}
 )
