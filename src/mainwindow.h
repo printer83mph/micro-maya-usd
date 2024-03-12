@@ -26,6 +26,7 @@ private slots:
   void slot_loadObj();
   void slot_loadSkeleton();
   void slot_exportUSD();
+  void slot_verifyUSDAsset();
 
   // UI management called from MyGL
   void slot_clearUI();

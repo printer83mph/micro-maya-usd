@@ -639,6 +639,7 @@
     <addaction name="actionImportOBJ"/>
     <addaction name="actionImportJSONSkeleton"/>
     <addaction name="actionExportUSD"/>
+    <addaction name="actionVerifyUSDAsset"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -692,6 +693,17 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actionVerifyUSDAsset">
+   <property name="text">
+    <string>Verify USD Asset</string>
+   </property>
+   <property name="toolTip">
+    <string>Check that a USD assets matches our pipeline format</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+U</string>
    </property>
   </action>
  </widget>

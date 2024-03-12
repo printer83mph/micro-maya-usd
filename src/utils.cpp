@@ -22,12 +22,7 @@ bool utils::verifyUsdFile(QWidget *parent,
   }
   std::string fileName = filePath.filename().string();
 
-  std::smatch assetNameMatch;
-  if (!std::regex_search(fileName, assetNameMatch, std::regex(".*\\.usda"))) {
-    QMessageBox::warning(parent, "Invalid USD file", "Error: File not named");
-    return false;
-  };
-  auto assetName = assetNameMatch[0].str();
+  auto assetName = fileName.substr(0, fileName.find_last_of('.'));
   if (!std::regex_match(assetName, std::regex(R"(^[a-z]+([A-Z][a-z]+)*$)"))) {
     QMessageBox::warning(parent, "Invalid USD file",
                          "Error: Asset name is not in camelCase");

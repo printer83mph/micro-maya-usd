@@ -7,6 +7,7 @@
 #include <QFileDialog>
 #include <QJsonDocument>
 #include <QMessageBox>
+#include <filesystem>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -22,6 +23,8 @@ MainWindow::MainWindow(QWidget *parent)
   // export USD button
   connect(ui->actionExportUSD, &QAction::triggered, this,
           &MainWindow::slot_exportUSD);
+  connect(ui->actionVerifyUSDAsset, &QAction::triggered, this,
+          &MainWindow::slot_verifyUSDAsset);
 
   // ui initialization
   connect(ui->mygl, &MyGL::signal_clearUI, this, &MainWindow::slot_clearUI);
@@ -125,6 +128,9 @@ void MainWindow::slot_loadSkeleton() {
       QFileDialog::getOpenFileName(this, "Select a JSON skeleton file to load",
                                    "./resources/jsons", "JSON Files (*.json)");
 
+  if (filePath.isEmpty() || filePath.isNull())
+    return;
+
   QFile file = QFile(filePath, this);
 
   // make sure file is readable
@@ -151,6 +157,16 @@ void MainWindow::slot_exportUSD() {
     return;
 
   ui->mygl->exportUSD(filePath);
+}
+
+void MainWindow::slot_verifyUSDAsset() {
+  QString filePath = QFileDialog::getOpenFileName(
+      this, "Select a USDA file to verify", "./", "USDA Files (*.usda)");
+
+  if (filePath.isEmpty() || filePath.isNull())
+    return;
+
+  utils::verifyUsdFile(this, std::filesystem::path(filePath.toStdString()));
 }
 
 void MainWindow::slot_clearUI() {
