@@ -1,8 +1,10 @@
 #pragma once
 
+#include <QWidget>
 #include <glm/vec3.hpp>
 
 #include <cmath>
+#include <filesystem>
 
 static const float PI = 3.14159265358979323846f;
 
@@ -25,4 +27,5 @@ template <typename T> inline bool fequal(T a, T b, T epsilon = 0.0001) {
 namespace utils {
 float getRandom();
 glm::vec3 getRandomColor();
+bool verifyUsdFile(QWidget *parent, const std::filesystem::path &filePath);
 } // namespace utils
