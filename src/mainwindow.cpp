@@ -109,6 +109,9 @@ void MainWindow::slot_loadObj() {
       this, "Select an OBJ file to load", "./resources/obj_files",
       "OBJ Files (*.obj)");
 
+  if (filePath.isEmpty() || filePath.isNull())
+    return;
+
   QFile file = QFile(filePath, this);
 
   // make sure file is readable
